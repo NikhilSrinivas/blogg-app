@@ -49,10 +49,10 @@ test('calls addPost', t => {
   wrapper.ref('name').value = 'David';
   wrapper.ref('title').value = 'Some Title';
   wrapper.ref('content').value = 'Bla Bla Bla';
-
+  wrapper.ref('visits').value = '0';
   wrapper.find('a').first().simulate('click');
   t.truthy(addPost.calledOnce);
-  t.truthy(addPost.calledWith('David', 'Some Title', 'Bla Bla Bla'));
+  t.truthy(addPost.calledWith('David', 'Some Title', 'Bla Bla Bla', '0'));
 });
 
 test('empty form doesn\'t call addPost', t => {
