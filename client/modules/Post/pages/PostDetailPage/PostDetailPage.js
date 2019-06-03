@@ -11,7 +11,7 @@ import styles from '../../components/PostListItem/PostListItem.css';
 import { fetchPost } from '../../PostActions';
 
 // Import Selectors
-import { getPost } from '../../PostReducer';
+import { getPostAfterIncrementing } from '../../PostReducer';
 
 export function PostDetailPage(props) {
   return (
@@ -21,6 +21,7 @@ export function PostDetailPage(props) {
         <h3 className={styles['post-title']}>{props.post.title}</h3>
         <p className={styles['author-name']}><FormattedMessage id="by" /> {props.post.name}</p>
         <p className={styles['post-desc']}>{props.post.content}</p>
+        <p className={styles['post-desc']}>{props.post.visits}</p>
       </div>
     </div>
   );
@@ -34,7 +35,7 @@ PostDetailPage.need = [params => {
 // Retrieve data from store as props
 function mapStateToProps(state, props) {
   return {
-    post: getPost(state, props.params.cuid),
+    post: getPostAfterIncrementing(state, props.params.cuid),
   };
 }
 
@@ -43,6 +44,7 @@ PostDetailPage.propTypes = {
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
+    visits: PropTypes.string.isRequired,
     slug: PropTypes.string.isRequired,
     cuid: PropTypes.string.isRequired,
   }).isRequired,

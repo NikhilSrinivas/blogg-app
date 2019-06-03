@@ -25,7 +25,7 @@ export function getPosts(req, res) {
  * @returns void
  */
 export function addPost(req, res) {
-  if (!req.body.post.name || !req.body.post.title || !req.body.post.content) {
+  if (!req.body.post.name || !req.body.post.title || !req.body.post.content || !req.body.post.visits) {
     res.status(403).end();
   }
 
@@ -35,7 +35,7 @@ export function addPost(req, res) {
   newPost.title = sanitizeHtml(newPost.title);
   newPost.name = sanitizeHtml(newPost.name);
   newPost.content = sanitizeHtml(newPost.content);
-
+  newPost.visits = sanitizeHtml(newPost.visits);
   newPost.slug = slug(newPost.title.toLowerCase(), { lowercase: true });
   newPost.cuid = cuid();
   newPost.save((err, saved) => {
@@ -75,6 +75,25 @@ export function deletePost(req, res) {
 
     post.remove(() => {
       res.status(200).end();
+    });
+  });
+}
+
+
+/**
+ * Increase a post
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function increasePost(req, res) {
+  Post.findOne({ cuid: req.params.cuid }).exec((err, post) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    post.visits++;
+    post.save(() => {
+      res.json({ post });
     });
   });
 }
